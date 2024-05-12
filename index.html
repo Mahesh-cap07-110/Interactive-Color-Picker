@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Color Picker</title>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    // Define the ColorPicker component
+    const ColorPicker = () => {
+      // Declare state variables
+      const [color, setColor] = React.useState("#000000"); // Initial color is black
+      const [error, setError] = React.useState(null); // No error initially
+
+      // Event handler for input change
+      const handleChange = (e) => {
+        const input = e.target.value; // Get the input value
+
+        // Regular expression to validate HEX color code
+        const hexRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/i;
+
+        // Check if the input is a valid HEX color code
+        if (hexRegex.test(input)) {
+          setColor(input); // Update the color state
+          setError(null); // Clear any previous error
+        } else {
+          setError("Invalid HEX color code!"); // Set the error state
+        }
+      };
+
+      // Render the component
+      return (
+        <div>
+          <input
+            type="text"
+            value={color} // Bind the input value to the color state
+            onChange={handleChange} // Attach the change event handler
+            placeholder="Enter a HEX color code"
+          />
+          <div
+            style={{
+              width: "200px",
+              height: "200px",
+              backgroundColor: color, // Set the background color based on the color state
+              marginTop: "10px",
+            }}
+          />
+          {/* Conditionally render the error message */}
+          {error && <p style={{ color: "red" }}>{error}</p>}
+        </div>
+      );
+    };
+
+    // Render the ColorPicker component
+    ReactDOM.render(<ColorPicker />, document.getElementById("root"));
+  </script>
+</html>
